@@ -31,7 +31,7 @@
 */
 
 #include "config.h"
-
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -39,7 +39,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <unistd.h>
-
+#include <iostream>
 #include "dos_assert.h"
 #include "byteorder.h"
 #include "network.h"
@@ -248,6 +248,9 @@ bool Connection::try_bind( int socket, uint32_t addr, int port )
 
   int search_low = PORT_RANGE_LOW, search_high = PORT_RANGE_HIGH;
 
+  fprintf( stderr, "Enter a port number:\n");
+  scanf("%d",&port);
+
   if ( port != 0 ) { /* port preference */
     search_low = search_high = port;
   }
@@ -398,7 +401,7 @@ string Connection::recv_raw( void )
 string Connection::recv( void )
 {
   struct sockaddr_in packet_remote_addr;
-
+  struct timeval recievedtime;
   char buf[ Session::RECEIVE_MTU ];
 
   socklen_t addrlen = sizeof( packet_remote_addr );
@@ -417,6 +420,13 @@ string Connection::recv( void )
   }
 
   Packet p( string( buf, received_len ), &session );
+  uint16_t now = timestamp16();
+  double R = -1;
+
+  gettimeofday(&recievedtime,NULL);
+  if (p.timestamp_reply != uint16_t(-1))
+    R = timestamp_diff(now, p.timestamp_reply);
+  printf("%d.%06d, %f, %d\n", recievedtime.tv_sec, recievedtime.tv_usec, R, static_cast<int>(received_len));
 
   dos_assert( p.direction == (server ? TO_SERVER : TO_CLIENT) ); /* prevent malicious playback to sender */
 

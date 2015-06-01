@@ -1,0 +1,9 @@
+./autogen.sh
+./configure
+make
+
+cd alfalfa/src/examples
+
+Client: ./sproutbt2 IP PORT > outputfile
+
+Server: ./sproutbt2 
