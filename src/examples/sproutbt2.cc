@@ -36,7 +36,7 @@ int main( int argc, char *argv[] )
   Select &sel = Select::get_instance();
   sel.add_fd( net->fd() );
 
-  const int fallback_interval = server ? 20 : 50;
+  const int fallback_interval = !server ? 20 : 50;
 
   /* wait to get attached */
   if ( server ) {
@@ -65,7 +65,7 @@ int main( int argc, char *argv[] )
   while ( 1 ) {
     int bytes_to_send = net->window_size();
 
-    if ( server ) {
+    if ( !server ) {
       bytes_to_send = 0;
     }
 
