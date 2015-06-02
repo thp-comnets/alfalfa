@@ -18,17 +18,18 @@ int main( int argc, char *argv[] )
 
   bool server = true;
 
-  if ( argc > 1 ) {
+  if ( argc > 2 ) {
     /* client */
 
     server = false;
 
-    ip = argv[ 1 ];
-    port = atoi( argv[ 2 ] );
+    ip = argv[ 2 ];
+    port = atoi( argv[ 1 ] );
 
     net = new Network::SproutConnection( "4h/Td1v//4jkYhqhLGgegw", ip, port );
   } else {
-    net = new Network::SproutConnection( NULL, NULL );
+    //port = argv[ 1 ];
+    net = new Network::SproutConnection( NULL, argv[ 1 ] );
   }
 
   fprintf( stderr, "Port bound is %d\n", net->port() );

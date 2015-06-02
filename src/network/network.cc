@@ -248,8 +248,8 @@ bool Connection::try_bind( int socket, uint32_t addr, int port )
 
   int search_low = PORT_RANGE_LOW, search_high = PORT_RANGE_HIGH;
 
-  fprintf( stderr, "Enter a port number:\n");
-  scanf("%d",&port);
+//  fprintf( stderr, "Enter a port number:\n");
+//  scanf("%d",&port);
 
   if ( port != 0 ) { /* port preference */
     search_low = search_high = port;
